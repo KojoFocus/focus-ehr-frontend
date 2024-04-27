@@ -10,12 +10,16 @@ import Home from "./pages/Home.js";
 import PatientDetails from "./pages/PatientDetailsPage.js";
 import AddVitals from "./pages/AddVitalSigns.js";
 import AddDiagnosis from "./pages/AddDiagnosisPage.js";
+import ProfilePage from "./pages/ProfilePage.js";
+import Logout from "./pages/Logout.js";
 
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+      <Route path="/logout" element={<Logout />} />
+      <Route path="/profile" element={<ProfilePage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />

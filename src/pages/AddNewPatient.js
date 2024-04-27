@@ -82,7 +82,7 @@ export default function AddPatient() {
               duration: theme.transitions.duration.enteringScreen,
               easing: theme.transitions.easing.easeInOut,
             }), 
-            // marginTop: '-20vh', // Add this line to move the form up
+            marginTop: "-6rem"
           }}
         >
           <Container sx={{ padding: 3 }} maxWidth="xs">

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import hero from "../assets/hero.png"; // Import the logo
+import logo from "../assets/logo.png"; // Import the logo
 
 import Dashboard from "./Dashboard.js"; // Import the Dashboard
 
@@ -38,22 +38,23 @@ export default function Home() {
       <Dashboard />
 
       <ThemeProvider theme={theme}>
-        {/* Add the Dashboard */}
         <Box
           display="flex"
-          flexDirection={isMobile ? "column" : "row"}
+          flexDirection={isMobile ? "column-reverse" : "row"}
           justifyContent="center"
           alignItems="center"
           minHeight="100vh"
-          padding={isMobile ? "1rem" : "2rem"} // Reduced padding for mobile
+          
+          padding={isMobile ? "1rem" : "2rem"}
           bgcolor={theme.palette.background.default}
           sx={{
             transition: theme.transitions.create("background-color", {
               duration: theme.transitions.duration.enteringScreen,
               easing: theme.transitions.easing.easeInOut,
             }),
-            marginTop: isMobile ? "-150px" : "0", // Negative margin-top for mobile
-            paddingLeft: isMobile ? "60px" : "0"
+            paddingLeft: "5rem",
+            paddingRight: "2rem",
+            marginTop: "-5rem"
           }}
         >
           <Box
@@ -77,7 +78,7 @@ export default function Home() {
               color="textSecondary"
               align="center"
             >
-              Manage patient's data efficiently... 
+              Manage patient's data efficiently with our modern and user-friendly interface.
             </Typography>
           </Box>
 
@@ -88,13 +89,10 @@ export default function Home() {
             alignItems="center"
           >
             <img
-              src={hero}
+              src={logo}
               alt="Logo"
-              style={{ height: isMobile ? "250px" : "750px",
-              marginTop: isMobile ? "-300px" : "0", // Negative margin-top for mobile
-            }}
-            />{" "}
-            {/* Add the logo */}
+              style={{ height: isMobile ? "250px" : "750px" }}
+            />
           </Box>
         </Box>
       </ThemeProvider>

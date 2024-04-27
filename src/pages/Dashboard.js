@@ -16,7 +16,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Home, People, PersonAdd, Logout } from "@mui/icons-material";
+import { Home, People, PersonAdd, Logout, AccountCircle } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
 import AllPatients from "./AllPatientsPage";
@@ -136,7 +136,7 @@ export default function Dashboard() {
           </DrawerHeader>
           <Divider />
           <List>
-            {["Home", "Patients", "Add Patient", "Logout"].map(
+            {["Home", "Patients", "Add Patient", "My Profile", "Logout"].map(
               (text, index) => (
                 <ListItem
                   button
@@ -149,7 +149,9 @@ export default function Dashboard() {
                       ? "/allpatients"
                       : index === 2
                       ? "/addnewpatient"
-                      : "#"
+                      : index === 3
+                      ? "/profile"
+                      : "/logout"
                   }
                 >
                   <ListItemIcon>
@@ -159,6 +161,8 @@ export default function Dashboard() {
                       <People />
                     ) : index === 2 ? (
                       <PersonAdd />
+                    ) : index === 3 ? (
+                      <AccountCircle />
                     ) : (
                       <Logout />
                     )}
@@ -171,7 +175,7 @@ export default function Dashboard() {
 
           <Divider />
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, paddingLeft: "2rem", paddingRight: "2rem" }}>
           <Toolbar />
         </Box>
       </Box>

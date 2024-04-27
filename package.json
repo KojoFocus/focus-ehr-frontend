@@ -2,7 +2,6 @@
   "name": "focus-ehr",
   "version": "0.1.0",
   "main": "server.js",
- 
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -26,6 +25,8 @@
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
+    "react-swipeable-views": "^0.14.0",
+    "react-swipeable-views-utils": "^0.14.0",
     "recharts": "^2.12.6",
     "web-vitals": "^2.1.4"
   },
@@ -54,7 +55,6 @@
     ]
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  
   "keywords": [],
   "author": "",
   "license": "ISC"
