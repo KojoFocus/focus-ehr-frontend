@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Button, TextField, Container, Typography, Box, Paper, CircularProgress } from '@mui/material';
+import { Button, TextField, Container, Typography, Box, Paper, Snackbar, Alert } from '@mui/material';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import logo from '../assets/logo.png'; // Import the logo
-import { Alert, Collapse, IconButton } from "@mui/material";
-import { Close } from "@mui/icons-material";
-import Dashboard from './Dashboard.js';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
@@ -30,141 +28,134 @@ const theme = createTheme({
   },
 });
 
-function LoadingButton({ loading, ...props }) {
-  return (
-    <Button {...props} disabled={loading}>
-      {loading ? <CircularProgress size={24} /> : props.children}
-    </Button>
-  );
-}
-
 export default function AddPatient() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState('New Patient Added Successfully!');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
-
-    // Add your fetch or axios HTTP request here
+    const newPatient = {
+      firstName:firstName,
+      lastName:lastName,
+      age:age,
+      gender:gender
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:5959/api/patients`, {
+          method: "POST", 
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body:JSON.stringify(newPatient),
+        })
+      const data = await response.json()
+      console.log(data)
+      setOpen(true);
+      navigate("/allpatients"); // Navigate to /allpatients after successfully adding a patient
+  
+    } catch (error) {
+      
+    }
     console.log(`First Name: ${firstName}`);
     console.log(`Last Name: ${lastName}`);
     console.log(`Age: ${age}`);
     console.log(`Gender: ${gender}`);
+  };
 
-    // Update message based on response status
-    // Open collapsible Alert
-    setLoading(false);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
   };
 
   return (
-    <>
-      <Dashboard />
-      <ThemeProvider theme={theme}>
-        <Box 
-          display="flex" 
-          justifyContent="center" 
-          alignItems="center" 
-          minHeight="80vh" // Adjust this value to move the form up
-          padding="2rem"
-          marginTop="-110px"
-          bgcolor={theme.palette.background.default}
-          sx={{
-            transition: theme.transitions.create('background-color', {
-              duration: theme.transitions.duration.enteringScreen,
-              easing: theme.transitions.easing.easeInOut,
-            }), 
-            marginTop: "-6rem"
-          }}
-        >
-          <Container sx={{ padding: 3 }} maxWidth="xs">
-            <Paper elevation={isMobile ? 0 : 3} sx={{ padding: 3, borderRadius: 2 }}>
-              <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Typography variant={isMobile ? "h6" : "h4"} color="textPrimary">Add Patient</Typography>
-                <img src={logo} alt="Logo" style={{ height: '40px' }} /> {/* Add the logo */}
-              </Box>
-              <form onSubmit={handleSubmit}>
-                <TextField
-                  margin="normal"
-                  fullWidth
-                  label="First Name"
-                  variant="outlined"
-                  color="secondary" // Use the teal color from the logo for the text fields
-                  sx={{ borderColor: '#20ebf3' }} // Set border color to #20ebf3
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-                <TextField
-                  margin="normal"
-                  fullWidth
-                  label="Last Name"
-                  variant="outlined"
-                  color="secondary" // Use the teal color from the logo for the text fields
-                  sx={{ borderColor: '#20ebf3' }} // Set border color to #20ebf3
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-                <TextField
-                  margin="normal"
-                  fullWidth
-                  label="Age"
-                  variant="outlined"
-                  color="secondary" // Use the teal color from the logo for the text fields
-                  sx={{ borderColor: '#20ebf3' }} // Set border color to #20ebf3
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                />
-                <TextField
-                  margin="normal"
-                  fullWidth
-                  label="Gender"
-                  variant="outlined"
-                  color="secondary" // Use the teal color from the logo for the text fields
-                  sx={{ borderColor: '#20ebf3' }} // Set border color to #20ebf3
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                />
-                <Box textAlign="center">
-                  <Collapse in={open}>
-                    <Alert
-                      action={
-                        <IconButton
-                          aria-label="close"
-                          color="inherit"
-                          size="small"
-                          onClick={() => {
-                            setOpen(false);
-                          }}
-                        >
-                          <Close fontSize="inherit" />
-                        </IconButton>
-                      }
-                      sx={{ mb: 2 }}
-                    >{message}</Alert>
-                  </Collapse>
-                  <LoadingButton
-                    sx={{ width: '50%' }}
-                    loading={loading}
-                    type="submit"
-                    size="large"
-                    variant="contained"
-                  >
+    <ThemeProvider theme={theme}>
+      <Box 
+        display="flex" 
+        justifyContent="center" 
+        alignItems="center" 
+        minHeight="100vh" 
+        padding="2rem"
+        bgcolor={theme.palette.background.default}
+        sx={{
+          transition: theme.transitions.create('background-color', {
+            duration: theme.transitions.duration.enteringScreen,
+            easing: theme.transitions.easing.easeInOut,
+          }),
+        }}
+      >
+        <Container sx={{ padding: 3 }} maxWidth="xs">
+          <Paper elevation={isMobile ? 0 : 3} sx={{ padding: 3, borderRadius: 2 }}>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <Typography variant={isMobile ? "h6" : "h4"} color="textPrimary">Add Patient</Typography>
+              <img src={logo} alt="Logo" style={{ height: '40px' }} /> {/* Add the logo */}
+            </Box>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                margin="normal"
+                fullWidth
+                label="First Name"
+                variant="outlined"
+                color="secondary" // Use the teal color from the logo for the text fields
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                label="Last Name"
+                variant="outlined"
+                color="secondary" // Use the teal color from the logo for the text fields
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                label="Age"
+                variant="outlined"
+                color="secondary" // Use the teal color from the logo for the text fields
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                label="Gender"
+                variant="outlined"
+                color="secondary" // Use the teal color from the logo for the text fields
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+              />
+              <Box display="flex" justifyContent="center" alignItems="center" width="100%"> {/* Add this Box */}
+                <Button 
+                    type='submit' 
+                    color='primary' 
+                    variant='contained' 
+                    fullWidth
+                    style={{ margin: '10px', fontSize: isMobile ? '0.75rem' : '1rem' }}
+                >
                     Add Patient
-                  </LoadingButton>
-                </Box>
-              </form>
-            </Paper>
-          </Container>
-        </Box>
-      </ThemeProvider>
-    </>
+                </Button>
+              </Box> {/* End of Box */}
+            </form>
+          </Paper>
+        </Container>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success">
+            Patient Added Successfully!
+          </Alert>
+        </Snackbar>
+      </Box>
+    </ThemeProvider>
   );
 }

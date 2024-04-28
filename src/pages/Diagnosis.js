@@ -48,12 +48,14 @@ export default function Diagnosis() {
         alignItems="center" 
         minHeight="100vh" 
         padding="2rem"
+       
         bgcolor={theme.palette.background.default}
         sx={{
           transition: theme.transitions.create('background-color', {
             duration: theme.transitions.duration.enteringScreen,
             easing: theme.transitions.easing.easeInOut,
           }),
+         
         }}
       >
         <Container sx={{ padding: 3 }} maxWidth="md">

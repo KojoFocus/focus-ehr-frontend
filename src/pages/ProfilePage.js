@@ -11,42 +11,28 @@ import logo from "../assets/logo.png"; // Import the logo
 
 import Dashboard from "./Dashboard.js";
 
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: "#800080", // Purple color from the logo
-//     },
-//     secondary: {
-//       main: "#008080", // Teal color from the logo
-//     },
-//     background: {
-//       default: "#800080", // Purple color from the logo
-//     },
-//   },
-//   transitions: {
-//     easing: {
-//       easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)",
-//     },
-//     duration: {
-//       enteringScreen: 1000,
-//       leavingScreen: 1000,
-//     },
-//   },
-// });
-
-// Define the profile function here as a placeholder
-// Replace it with your actual function or import it from another module
-const profile = async () => {
-  // Mock user data
-  return {
-    data: {
-      username: "John Doe",
-      email: "johndoe@example.com",
-      address: "123 Main St, Anytown, USA",
-      // Add more user details as needed
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#800080", // Purple color from the logo
     },
-  };
-};
+    secondary: {
+      main: "#008080", // Teal color from the logo
+    },
+    background: {
+      default: "#800080", // Purple color from the logo
+    },
+  },
+  transitions: {
+    easing: {
+      easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)",
+    },
+    duration: {
+      enteringScreen: 1000,
+      leavingScreen: 1000,
+    },
+  },
+});
 
 export default function UserProfile() {
   const theme = useTheme();
@@ -57,8 +43,9 @@ export default function UserProfile() {
   useEffect(() => {
     // Fetch user data from server
     const fetchUser = async () => {
-      const response = await profile(/* pass necessary parameters */);
-      setUser(response.data);
+      const response = await fetch(`http://localhost:5959/api/users/register`);
+      const data = await response.json();
+      setUser(data);
     };
 
     fetchUser();

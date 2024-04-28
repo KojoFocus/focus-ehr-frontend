@@ -31,6 +31,8 @@ const theme = createTheme({
 export default function AddDiagnosis() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
   const [patientId, setPatientId] = useState('');
   const [summary, setSummary] = useState('');
@@ -44,16 +46,14 @@ export default function AddDiagnosis() {
   };
 
   return (
-<>
-<Dashboard/>
     <ThemeProvider theme={theme}>
+      <Dashboard/>
       <Box 
         display="flex" 
         justifyContent="center" 
         alignItems="center" 
         minHeight="100vh" 
-        padding="2rem"
-        marginTop="-240px"
+        padding={isSmallScreen ? "1rem" : isTablet ? "4rem" : "3rem"} // Increase padding for small screens and tablets
         bgcolor={theme.palette.background.default}
         sx={{
           transition: theme.transitions.create('background-color', {
@@ -62,11 +62,11 @@ export default function AddDiagnosis() {
           }),
         }}
       >
-        <Container sx={{ padding: 3 }} maxWidth="xs">
-          <Paper elevation={isMobile ? 0 : 3} sx={{ padding: 3, borderRadius: 2 }}>
+        <Container sx={{ padding: isSmallScreen ? 1 : isTablet ? 2 : 3 }} maxWidth="xs"> {/* Increase padding for small screens and tablets */}
+          <Paper elevation={isMobile ? 0 : 3} sx={{ padding: isSmallScreen ? 1 : isTablet ? 2 : 3, borderRadius: 2 }}> {/* Increase padding and elevation for small screens and tablets */}
             <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Typography variant={isMobile ? "h6" : "h4"} color="textPrimary">Add Diagnosis</Typography>
-              <img src={logo} alt="Logo" style={{ height: '40px' }} /> {/* Add the logo */}
+              <Typography variant={isSmallScreen ? "h6" : isTablet ? "h6" : "h4"} color="textPrimary">Add Diagnosis</Typography> {/* Adjust typography for small screens and tablets */}
+              <img src={logo} alt="Logo" style={{ height: isSmallScreen ? '30px' : isTablet ? '40px' : '50px' }} /> {/* Increase logo size for small screens and tablets */}
             </Box>
             <form onSubmit={handleSubmit}>
               <TextField
@@ -95,7 +95,7 @@ export default function AddDiagnosis() {
                     color='primary' 
                     variant='contained' 
                     fullWidth
-                    style={{ margin: '10px', fontSize: isMobile ? '0.75rem' : '1rem' }}
+                    style={{ margin: '10px', fontSize: isSmallScreen ? '0.75rem' : isTablet ? '1rem' : '1.25rem' }} // Increase font size for small screens and tablets
                 >
                     Submit 
                 </Button>
@@ -105,6 +105,5 @@ export default function AddDiagnosis() {
         </Container>
       </Box>
     </ThemeProvider>
-    </>
   );
 }

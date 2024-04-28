@@ -136,7 +136,7 @@ export default function Dashboard() {
           </DrawerHeader>
           <Divider />
           <List>
-            {["Home", "Patients", "Add Patient", "My Profile", "Logout"].map(
+            {["Home", "Add Patient","Patients", "My Profile", "Logout"].map(
               (text, index) => (
                 <ListItem
                   button
@@ -146,9 +146,9 @@ export default function Dashboard() {
                     index === 0
                       ? "/home"
                       : index === 1
-                      ? "/allpatients"
-                      : index === 2
                       ? "/addnewpatient"
+                      : index === 2
+                      ? "/allpatients"
                       : index === 3
                       ? "/profile"
                       : "/logout"
@@ -158,9 +158,9 @@ export default function Dashboard() {
                     {index === 0 ? (
                       <Home />
                     ) : index === 1 ? (
-                      <People />
-                    ) : index === 2 ? (
                       <PersonAdd />
+                    ) : index === 2 ? (
+                      <People />
                     ) : index === 3 ? (
                       <AccountCircle />
                     ) : (

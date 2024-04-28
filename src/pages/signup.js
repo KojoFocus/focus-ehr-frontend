@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, TextField, Container, Typography, Box, Paper } from '@mui/material';
+import { Button, TextField, Container, Typography, Box, Paper, Snackbar, Alert } from '@mui/material';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import logo from '../assets/logo.png'; // Import the logo
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
@@ -30,21 +31,51 @@ const theme = createTheme({
 export default function Signup() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [open, setOpen] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Add your fetch or axios HTTP request here
-    
+    const userRegister = {
+      username:username,
+      email:email,
+      password:password,
+      phoneNumber:phoneNumber
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:5959/api/users/register`, {
+          method: "POST", 
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body:JSON.stringify(userRegister),
+        })
+      const data = await response.json()
+      console.log(data)
+      localStorage.setItem("token", data.token)
+      navigate("/home");
+      setOpen(true);
+  
+    } catch (error) {
+      
+    }
     console.log(`Username: ${username}`);
     console.log(`Email: ${email}`);
     console.log(`Password: ${password}`);
     console.log(`Phone Number: ${phoneNumber}`);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
   };
 
   return (
@@ -121,6 +152,11 @@ export default function Signup() {
             </form>
           </Paper>
         </Container>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success">
+            Signup Successful!
+          </Alert>
+        </Snackbar>
       </Box>
     </ThemeProvider>
   );

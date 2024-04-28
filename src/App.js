@@ -13,8 +13,12 @@ import AddDiagnosis from "./pages/AddDiagnosisPage.js";
 import ProfilePage from "./pages/ProfilePage.js";
 import Logout from "./pages/Logout.js";
 
+import { useState } from 'react';
+
 
 export default function App() {
+
+  
   return (
     <BrowserRouter>
       <Routes>

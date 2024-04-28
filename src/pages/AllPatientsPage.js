@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Typography,
@@ -47,12 +47,23 @@ export default function AllPatients() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  // This is just dummy data. Replace this with actual data.
-  const patients = [
-    { id: 1, name: "John Doe", age: 30, sex: "male" },
-    { id: 2, name: "Jane Doe", age: 25, sex: "female" },
-    // Add more patients as needed.
-  ];
+  // Use useState to store the patients
+  const [patients, setPatients] = useState([]);
+
+  // Use useEffect to fetch the data from your backend
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const response = await fetch(`http://localhost:5959/api/patients`);
+        const data = await response.json();
+        setPatients(data);
+      } catch (error) {
+        console.error("Failed to fetch patients:", error);
+      }
+    };
+
+    fetchPatients();
+  }, []); // The empty array means this useEffect will run once when the component is mounted
 
   return (
     <>
@@ -111,16 +122,20 @@ export default function AllPatients() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {patients.map((patient) => (
-                      <TableRow key={patient.id}>
-                        <TableCell>{patient.id}</TableCell>
-                        <TableCell>{patient.name}</TableCell>
-                        <TableCell>{patient.age}</TableCell>
-                        <TableCell>{patient.sex}</TableCell>
-                        <LongMenu patientId={patient.id} />
-                      </TableRow>
-                    ))}
-                  </TableBody>
+  {patients.sort((a, b) => b.id - a.id).map((patient, index) => {
+    const id = String(index + 1).padStart(3, '0'); // Generate serial ID starting from 001
+    return (
+      <TableRow key={patient.id}>
+        <TableCell>{id}</TableCell>
+        <TableCell>{patient.firstName} {patient.lastName}</TableCell>
+        <TableCell>{patient.age}</TableCell>
+        <TableCell>{patient.gender}</TableCell>
+        <LongMenu patientId={patient.id} />
+      </TableRow>
+    );
+  })}
+</TableBody>
+
                 </Table>
               </TableContainer>
             </Paper>

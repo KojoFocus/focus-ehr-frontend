@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, TextField, Container, Typography, Box, Paper } from '@mui/material';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -28,9 +28,34 @@ const theme = createTheme({
   },
 });
 
-export default function AddVitals() {
+export default function AddVitals({ onAdd }) { // Destructure onAdd from props
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // Create a state for each input field
+  const [patientId, setPatientId] = useState('');
+  const [bodyTemperature, setBodyTemperature] = useState('');
+  const [bloodPressure, setBloodPressure] = useState('');
+  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('');
+  const [gender, setGender] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    // Create a new vitals object
+    const newVitals = {
+      patientId,
+      bodyTemperature,
+      bloodPressure,
+      weight,
+      height,
+      gender,
+    };
+
+    // Call the onAdd prop with the new vitals object
+    onAdd(newVitals);
+  };
 
   return (
     <>
@@ -57,13 +82,15 @@ export default function AddVitals() {
               <Typography variant={isMobile ? "h6" : "h4"} color="textPrimary">Vital Signs</Typography>
               <img src={logo} alt="Logo" style={{ height: '40px' }} /> {/* Add the logo */}
             </Box>
-            <form>
+            <form onSubmit={handleSubmit}>
               <TextField
                 margin="normal"
                 fullWidth
                 label="Patient ID"
                 variant="outlined"
                 color="secondary" // Use the teal color from the logo for the text fields
+                value={patientId}
+                onChange={(e) => setPatientId(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -71,20 +98,8 @@ export default function AddVitals() {
                 label="Body Temperature"
                 variant="outlined"
                 color="secondary" // Use the teal color from the logo for the text fields
-              />
-              <TextField
-                margin="normal"
-                fullWidth
-                label="Heart Rate"
-                variant="outlined"
-                color="secondary" // Use the teal color from the logo for the text fields
-              />
-              <TextField
-                margin="normal"
-                fullWidth
-                label="Respiratory Rate"
-                variant="outlined"
-                color="secondary" // Use the teal color from the logo for the text fields
+                value={bodyTemperature}
+                onChange={(e) => setBodyTemperature(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -92,6 +107,35 @@ export default function AddVitals() {
                 label="Blood Pressure"
                 variant="outlined"
                 color="secondary" // Use the teal color from the logo for the text fields
+                value={bloodPressure}
+                onChange={(e) => setBloodPressure(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                label="Weight"
+                variant="outlined"
+                color="secondary" // Use the teal color from the logo for the text fields
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                label="Height"
+                variant="outlined"
+                color="secondary" // Use the teal color from the logo for the text fields
+                value={height}
+                onChange={(e) => setHeight(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                label="Gender"
+                variant="outlined"
+                color="secondary" // Use the teal color from the logo for the text fields
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
               />
               <Box display="flex" justifyContent="center" alignItems="center" width="100%"> {/* Add this Box */}
                 <Button 
