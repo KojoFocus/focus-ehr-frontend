@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, TextField, Container, Typography, Box, Paper } from '@mui/material';
+import { Button, TextField, Container, Typography, Box, Paper, Snackbar, Alert } from '@mui/material';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import logo from '../assets/logo.png'; // Import the logo
+import { useNavigate } from 'react-router-dom';
 import Dashboard from './Dashboard';
 
 const theme = createTheme({
@@ -28,46 +29,65 @@ const theme = createTheme({
   },
 });
 
-export default function AddVitals({ onAdd }) { // Destructure onAdd from props
+export default function AddVitals() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
 
   // Create a state for each input field
   const [patientId, setPatientId] = useState('');
-  const [bodyTemperature, setBodyTemperature] = useState('');
-  const [bloodPressure, setBloodPressure] = useState('');
+  const [temperature, setTemperature] = useState('');
+  const [pressure, setPressure] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
   const [gender, setGender] = useState('');
+  const [date, setDate] = useState(new Date().toISOString().slice(0,10)); // Add this line
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Create a new vitals object
     const newVitals = {
-      patientId,
-      bodyTemperature,
-      bloodPressure,
-      weight,
-      height,
-      gender,
+      patientId:patientId,
+      temperature:temperature,
+      pressure:pressure,
+      weight:weight,
+      height:height,
+      gender:gender,
+      date:date // Add this line
     };
 
-    // Call the onAdd prop with the new vitals object
-    onAdd(newVitals);
+    // Make the API call directly here
+    try {
+      const response = await fetch(`http://localhost:5959/api/vital-signs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newVitals),
+      });
+
+      if (!response.ok) {
+        throw new Error('HTTP error ' + response.status);
+      }
+
+      // Navigate to the All Patients page after successfully adding vitals
+      navigate(`/allpatients`);
+
+    } catch (error) {
+      console.error('There was an error!', error);
+    }
   };
 
   return (
-    <>
-    <Dashboard/>
     <ThemeProvider theme={theme}>
+      <Dashboard />
       <Box 
         display="flex" 
         justifyContent="center" 
         alignItems="center" 
         minHeight="100vh" 
         padding="2rem"
-        marginTop="-120px"
         bgcolor={theme.palette.background.default}
         sx={{
           transition: theme.transitions.create('background-color', {
@@ -86,6 +106,16 @@ export default function AddVitals({ onAdd }) { // Destructure onAdd from props
               <TextField
                 margin="normal"
                 fullWidth
+                label="Date"
+                variant="outlined"
+                color="secondary" // Use the teal color from the logo for the text fields
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                fullWidth
                 label="Patient ID"
                 variant="outlined"
                 color="secondary" // Use the teal color from the logo for the text fields
@@ -98,8 +128,8 @@ export default function AddVitals({ onAdd }) { // Destructure onAdd from props
                 label="Body Temperature"
                 variant="outlined"
                 color="secondary" // Use the teal color from the logo for the text fields
-                value={bodyTemperature}
-                onChange={(e) => setBodyTemperature(e.target.value)}
+                value={temperature}
+                onChange={(e) => setTemperature(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -107,8 +137,8 @@ export default function AddVitals({ onAdd }) { // Destructure onAdd from props
                 label="Blood Pressure"
                 variant="outlined"
                 color="secondary" // Use the teal color from the logo for the text fields
-                value={bloodPressure}
-                onChange={(e) => setBloodPressure(e.target.value)}
+                value={pressure}
+                onChange={(e) => setPressure(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -153,6 +183,5 @@ export default function AddVitals({ onAdd }) { // Destructure onAdd from props
         </Container>
       </Box>
     </ThemeProvider>
-    </>
   );
-}
+};

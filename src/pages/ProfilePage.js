@@ -41,14 +41,12 @@ export default function UserProfile() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Fetch user data from server
-    const fetchUser = async () => {
-      const response = await fetch(`http://localhost:5959/api/users/register`);
-      const data = await response.json();
-      setUser(data);
+    // Set user data
+    const setUserProfile = () => {
+      setUser({ username: "KojoFocus" });
     };
 
-    fetchUser();
+    setUserProfile();
   }, []);
 
   return (
@@ -100,8 +98,6 @@ export default function UserProfile() {
               {user && (
                 <Box>
                   <Typography variant="h6">Username: {user.username}</Typography>
-                  <Typography variant="h6">Email: {user.email}</Typography>
-                  <Typography variant="h6">Address: {user.address}</Typography>
                   {/* Add more user details as needed */}
                 </Box>
               )}

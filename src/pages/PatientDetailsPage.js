@@ -56,9 +56,9 @@ export default function PatientDetails() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const patientDetails = {
-    id: "123456",
-    name: "John Doe",
-    dob: "01/01/1980",
+    id: "001",
+    name: "Ernest Obimpeh",
+    age: "20",
     sex: "Male",
     vitals: {
       temperature: ((98.6 - 32) * 5) / 9,
@@ -190,7 +190,7 @@ export default function PatientDetails() {
           >
             <CardContent>
               <Typography variant="h5">{patientDetails.name}</Typography>
-              <Typography variant="body1">DOB: {patientDetails.dob}</Typography>
+              <Typography variant="body1">Age: {patientDetails.age}</Typography>
               <Typography variant="body1">Sex: {patientDetails.sex}</Typography>
             </CardContent>
           </Card>

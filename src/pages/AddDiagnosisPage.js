@@ -3,6 +3,7 @@ import { Button, TextField, Container, Typography, Box, Paper } from '@mui/mater
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import logo from '../assets/logo.png'; // Import the logo
+import { useNavigate } from 'react-router-dom';
 import Dashboard from './Dashboard';
 
 const theme = createTheme({
@@ -37,12 +38,16 @@ export default function AddDiagnosis() {
   const [patientId, setPatientId] = useState('');
   const [summary, setSummary] = useState('');
 
+  const navigate = useNavigate(); // Add this line
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
     // Add your fetch or axios HTTP request here
     console.log(`Patient ID: ${patientId}`);
     console.log(`Diagnosis Summary: ${summary}`);
+
+    navigate('/allpatients'); // Add this line
   };
 
   return (
@@ -106,4 +111,4 @@ export default function AddDiagnosis() {
       </Box>
     </ThemeProvider>
   );
-}
+};

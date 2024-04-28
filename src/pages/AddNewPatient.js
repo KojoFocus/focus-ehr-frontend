@@ -4,6 +4,7 @@ import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import logo from '../assets/logo.png'; // Import the logo
 import { useNavigate } from 'react-router-dom';
+import Dashboard from './Dashboard';
 
 const theme = createTheme({
   palette: {
@@ -78,6 +79,9 @@ export default function AddPatient() {
   };
 
   return (
+
+    <>
+    <Dashboard/>
     <ThemeProvider theme={theme}>
       <Box 
         display="flex" 
@@ -157,5 +161,6 @@ export default function AddPatient() {
         </Snackbar>
       </Box>
     </ThemeProvider>
+    </>
   );
 }
