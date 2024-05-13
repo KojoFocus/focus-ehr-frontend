@@ -29,8 +29,7 @@ const theme = createTheme({
   },
 });
 
-export default function AddVitals() {
-  const theme = useTheme();
+export default function AddVitals() {  const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
 
